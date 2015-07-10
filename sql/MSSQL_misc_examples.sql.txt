@@ -1,0 +1,36 @@
+- Return primary key of the new inserted entry:
+
+Method 1:
+INSERT (..) VALUES (..) INTO tbl ; SELECT @@IDENTITY AS NewID;
+Method 2 (preferred over Method 1 in some cases):
+INSERT (..) VALUES (..) INTO tbl ; SELECT NEWID = SCOPE_IDENTITY();
+
+An article for more.
+
+- Create a table from another table:
+
+SELECT * FROM tbl_old INTO tbl_new
+
+- Create an empty table from an existing table:
+
+SELECT * INTO tbl_new FROM tbl_old where 1 = 0
+
+- Get column names in a table:
+
+SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.Columns where TABLE_NAME = 'tbl_name'
+
+- Count rows in union statement:
+
+SELECT count(*) FROM (
+SELECT field1 FROM table1
+UNION
+SELECT field2 FROM table2
+) as t
+
+- COALESCE - returns first non-null value in list, or null if all values are null
+
+See COALESCE (Transact-SQL).
+
+- Insert from another table in batch mode
+ 
+INSERT INTO MyTable (FirstCol, SecondCol) SELECT Col1, Col2 FROM MyTable2 
