@@ -7,3 +7,6 @@ Some vbscript code examples:
 3. Connect to database and execute query  
 4. Restart a windows service   
 5. Use of a log file   
+
+# zip.vbs
+Zip a file.
