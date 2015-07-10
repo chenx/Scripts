@@ -1,6 +1,6 @@
  /* 
     C# script to strip comment
-    This code extracts comment from a line of string (a sql file in this context). 
+    This code extracts comment from a line of string.
     Feeding a stream of lines to it, it concatenates the comment and non-comment parts and return them. 
     Comment is defined by "/** /" or "//" as in C/C++.
     
