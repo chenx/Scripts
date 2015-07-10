@@ -1,0 +1,100 @@
+MSSQL extended property
+MSSQL extended property is used to store metadata information on database objects (tables, views, columns, indexes etc.).
+
+- Extended Property is NOT case sensitive.
+- MSDN: add, drop, update, list extended properties:
+  http://msdn.microsoft.com/en-us/library/ms180047.aspx
+
+- list all extended properties:
+  SELECT * FROM sys.extended_properties;
+- list all extended properties for columns in all tables:
+  SELECT major_id, minor_id, t.name AS [Table Name], c.name AS [Column Name], value AS [Extended Property]
+  FROM sys.extended_properties AS ep
+  INNER JOIN sys.tables AS t ON ep.major_id = t.object_id 
+  INNER JOIN sys.columns AS c ON ep.major_id = c.object_id AND ep.minor_id = c.column_id
+  WHERE class = 1;
+- Show all the E.P. of a specific columns in a specific table:
+  SELECT objtype, objname, name, value
+  FROM fn_listextendedproperty (NULL, 'schema', 'dbo', 'table', 'T1', 'column', 'id');
+  
+Add/drop/update/list the Extended Property of a column:
+  
+- Show an E.P. of a columns in a table:
+  SELECT objtype, objname, name, value
+  FROM fn_listextendedproperty ('[E.P. name]', 'schema', 'dbo', 'table', 'T1', 'column', 'id');
+
+- Add an E.P. of a column in a table (the IF part is optional check):
+
+  IF NOT Exists (SELECT * FROM fn_listextendedproperty(
+    'Summary', 'schema', 'dbo', 'table', 'T1', 'column', 'id'
+  ))
+  EXEC sp_addextendedproperty 
+    @name = 'caption' 
+    ,@value = 'Employee ID' 
+    ,@level0type = 'schema', @level0name = dbo
+    ,@level1type = 'table', @level1name = 'T1'
+    ,@level2type = 'column', @level2name = id;
+  GO
+
+- Drop an E.P. of a column in a table (the IF part is optional check):
+
+  IF Exists (SELECT * FROM fn_listextendedproperty(
+    'Summary', 'schema', 'dbo', 'table', 'T1', 'column', 'id'
+  ))
+  EXEC sp_dropextendedproperty 
+    @name = 'caption' 
+    ,@level0type = 'schema', @level0name = dbo
+    ,@level1type = 'table', @level1name = 'T1'
+    ,@level2type = 'column', @level2name = id;
+  GO
+
+- Update an E.P. of a column in a table:
+  EXEC sp_updateextendedproperty 
+    @name = N'Caption'
+    ,@value = 'Employee ID must be unique.'
+    ,@level0type = N'Schema', @level0name = dbo
+    ,@level1type = N'Table',  @level1name = T1
+    ,@level2type = N'Column', @level2name = id;
+  GO
+
+Add/drop/update/list the Extended Property of a table:
+
+- The above shows how to add/drop/update/list the E.P. of a column.
+  To do the same thing for a table, just ignore the last 2 items for
+  level2type/level2name. For the IF part, use NULL for the last two items. E.g.:
+  IF Exists (SELECT * FROM fn_listextendedproperty(
+    'Summary', 'schema', 'dbo', 'table', 'T1', NULL, NULL
+  ))
+  Examples are given below.
+
+- Drop an extended property of a table:  
+  IF Exists (SELECT * FROM fn_listextendedproperty(
+    'Summary', 'schema', 'dbo', 'table', 'T1', null, null
+  ))
+  EXEC sp_dropextendedproperty 
+    @name = 'Summary' 
+    ,@level0type = 'schema' ,@level0name = dbo
+    ,@level1type = 'table' ,@level1name = 'T1';
+  GO
+  
+- Add an extended property to a table:  
+  IF NOT Exists (SELECT * FROM fn_listextendedproperty(
+    'Summary', 'schema', 'dbo', 'table', 'T1', null, null
+  ))
+  EXEC sp_addextendedproperty 
+    @name = 'Summary' 
+    ,@value = 'T1 table''s summary' 
+    ,@level0type = 'schema' ,@level0name = dbo
+    ,@level1type = 'table' ,@level1name = 'T1';
+  GO  
+
+Add/drop/update/list the Extended Property of a view or view's column:
+
+- Same as table, except that use "view" instead of "table" as level1type.
+  
+Note:
+
+- Since single quote "'" is used as delimiter, it should escaped
+  by "''" if it is used in the value.
+- Note that string quoted by "'" is allowed to contain new line character.
+  So if a value spans multiple lines, it won't be a problem.
