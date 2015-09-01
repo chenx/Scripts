@@ -27,30 +27,30 @@
     });
 
 
-    var seconds = 5; // seconds to wait before posting reply.
-    var timer$ = $('<span/>').html(seconds);
+    var seconds = 3; // seconds to wait before posting reply.
+    var time$ = $('<span/>').html(seconds);
     var go$ = $('<button/>').html('Reply');
     
     box$.append(go$)
-        .append('<br/>Time: ')
-        .append(timer$);
+        .append('<br/>Timer: ')
+        .append(time$);
 
     $('body').append(box$);
     
-    
     // Behavior.
     go$.click(function () {
-        wait();
+        go$.prop('disabled', true);
+        timer();
     });
     
-    function wait() {
+    function timer() {
         if (seconds == 0) {
             post();
         }
         else {
             seconds --;
-            timer$.html(seconds);
-            setTimeout(wait, 1000);
+            time$.html(seconds);
+            setTimeout(timer, 1000);
         }
     }
     
@@ -61,6 +61,7 @@
         $('#submit').trigger('click');        
     }
     
-    //wait(); // uncomment this to automatically start timer upon page load.
+    //timer(); // uncomment this to automatically start timer upon page load.
 })();
+
 
