@@ -1,11 +1,11 @@
 // ==UserScript==
-// @name         Reply to WordPress post automatically. For testing use only.
+// @name         WordPress Replybot
 // @namespace    http://your.homepage/
 // @version      0.1
-// @description  only support http://www.careerassist.org
+// @description  Reply to WordPress post automatically. For testing use only.
 // @author       X.C.
-// @match        http://cssauh.com/xc/wordpress/?p=1
-// @match        http://cssauh.com/xc/wordpress/?p=1#*
+// @match        http://mysite.com/wordpress/?p=1
+// @match        http://mysite.com/wordpress/?p=1#*
 // @require      http://code.jquery.com/jquery-latest.js
 // ==/UserScript==
 
