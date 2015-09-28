@@ -1,3 +1,3 @@
 # Scripts
 
-Scripts: bat (dos), shell, javascript, python, vbscript, SQL etc.
+Scripts: R, bat (dos), shell, javascript, python, vbscript, SQL etc.
