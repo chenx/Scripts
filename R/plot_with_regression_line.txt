@@ -1,0 +1,44 @@
+########################
+# References:
+# http://www.r-bloggers.com/how-to-plot-a-graph-in-r/
+# http://stackoverflow.com/questions/14451782/how-to-plot-the-linear-regression-in-r
+# http://www.r-bloggers.com/how-to-plot-points-regression-line-and-residuals/
+# http://127.0.0.1:24807/library/stats/html/lm.html
+#
+# Goodness of fit:
+# http://people.revoledu.com/kardi/tutorial/Regression/GoodnessOfFit.html
+# http://stackoverflow.com/questions/23519224/extract-r-square-value-with-r-in-linear-models
+########################
+
+
+########################
+# 1. Time v.s. Value. Data is read from file.
+########################
+
+d = read.table('C:\\data.txt', header=T, col.names=c("value", "time"))
+
+dim(d)
+summary(d)
+head(d)
+str(d)
+#plot(d)
+plot(d, xlab="Value", ylab="Time (second)")
+title(main="Time v.s. Value")
+
+########################
+# 2. Time v.s. Value. Data is from array.
+########################
+
+x = c(1,2,3,4)
+y = c(1210,2230,3340,4470)
+y = y / 60 / 60
+plot(x, y, xlab="Value", ylab="Time (hour)")
+title(main="Time v.s. Value")
+
+linear.model = lm(y~x)
+abline(linear.model, col="blue")
+
+# Check regression fitness. E.g., Multiple R-squared:  0.9994, Adjusted R-squared:  0.9992 
+# Usually fitness is considered good when R-squared or Adjusted R-squared value >= 0.8.
+summary(linear.model)
+
