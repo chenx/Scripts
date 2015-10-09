@@ -14,3 +14,6 @@ GO
 
 -- See: https://msdn.microsoft.com/en-us/library/ms187381.aspx
 select * from sys.partition_functions 
+
+-- Partition schema and Partition Function can be found in:
+-- OE - Databases - [your db] - Storage - Partition functions or schemes.
